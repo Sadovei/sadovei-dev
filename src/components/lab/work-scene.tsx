@@ -41,6 +41,12 @@ const NARROW_LAYOUT: [number, number, number][] = [
   [1.5, 0, 1.6],
 ];
 const FOV = 40;
+const TAN_HALF_FOV = Math.tan(THREE.MathUtils.degToRad(FOV / 2));
+
+// Camera distance at which a box of the given half-width and half-height fills the view
+function fitDistance(halfWidth: number, halfHeight: number, aspect: number) {
+  return Math.max(halfWidth / (TAN_HALF_FOV * aspect), halfHeight / TAN_HALF_FOV);
+}
 const QUALITY_LABELS: Record<QualityTier, string> = { low: "Low", medium: "Medium", high: "High" };
 
 function useMediaQuery(query: string) {
@@ -236,17 +242,18 @@ function Scene({ selected, hovered, motion, controls, dark, onSelect, onHover, b
   const goal = useMemo<Goal>(() => {
     const index = spots.findIndex((spot) => spot.slug === selected);
     if (index >= 0) {
+      // Frame the object and its label, with room left at the bottom for the controls
       const [x, y, z] = layout[index];
-      return {
-        // On narrow screens film from higher up so the front row drops out of frame
-        position: new THREE.Vector3(x, y + (narrow ? 4.2 : 1.6), z + (narrow ? 3 : 3.4)),
-        target: new THREE.Vector3(x, y + 0.75, z),
-      };
+      const top = spots[index].height + 0.75;
+      const halfHeight = (top / 2) * 1.3;
+      const distance = fitDistance(1.4, halfHeight, aspect);
+      const target = new THREE.Vector3(x, y + top / 2 - halfHeight * 0.12, z);
+      // On narrow screens film from higher up so the front row drops out of frame
+      const direction = (narrow ? new THREE.Vector3(0, 0.9, 0.75) : new THREE.Vector3(0, 0.4, 1)).normalize();
+      return { position: target.clone().addScaledVector(direction, distance), target };
     }
-    // Fit the whole scene horizontally for the current aspect ratio
-    const halfWidth = narrow ? 2.9 : 4.6;
-    const tan = Math.tan(THREE.MathUtils.degToRad(FOV / 2));
-    const distance = Math.max(halfWidth / (tan * aspect), 6.5);
+    // Fit the whole scene, labels included, for the current shape of the stage
+    const distance = Math.max(fitDistance(narrow ? 2.9 : 4.6, narrow ? 2.6 : 1.7, aspect), 6.5);
     // On narrow screens look down from higher up, so the back row stays visible
     return narrow
       ? { position: new THREE.Vector3(0, distance * 0.78, distance * 0.72), target: new THREE.Vector3(0, 0.4, 0) }
