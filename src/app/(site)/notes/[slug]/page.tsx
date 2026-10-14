@@ -39,7 +39,7 @@ export default async function NotePage({ params }: PageProps<"/notes/[slug]">) {
   const Body = noteBodies[slug];
   if (!note || !Body) notFound();
 
-  const others = notes.filter((n) => n.slug !== slug);
+  const nextNote = notes[(notes.findIndex((n) => n.slug === slug) + 1) % notes.length];
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
@@ -92,10 +92,10 @@ export default async function NotePage({ params }: PageProps<"/notes/[slug]">) {
         </div>
       </aside>
 
-      {others.length > 0 && (
+      {nextNote.slug !== slug && (
         <nav className="case__next" aria-label="More notes">
           <span>Next note</span>
-          <Link href={`/notes/${others[0].slug}`}>{others[0].title}</Link>
+          <Link href={`/notes/${nextNote.slug}`}>{nextNote.title}</Link>
         </nav>
       )}
     </article>
