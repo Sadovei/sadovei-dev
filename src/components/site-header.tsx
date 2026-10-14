@@ -86,8 +86,9 @@ export function SiteHeader() {
     };
   }, [isHome]);
 
-  // Case studies live under "Work"
-  const active: SectionId | null = isHome ? section : pathname.startsWith("/work") ? "work" : null;
+  // Case studies and the 3D lab live under "Work"
+  const underWork = pathname.startsWith("/work") || pathname.startsWith("/lab");
+  const active: SectionId | null = isHome ? section : underWork ? "work" : null;
 
   return (
     <header ref={ref} className="site-header" data-state="top">

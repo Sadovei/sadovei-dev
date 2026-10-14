@@ -23,6 +23,9 @@ export function SiteFooter() {
                   <Link href={`/#${item.id}`}>{item.label}</Link>
                 </li>
               ))}
+              <li>
+                <Link href="/lab/3d">3D lab</Link>
+              </li>
             </ul>
           </nav>
 

@@ -103,6 +103,10 @@ export default function Home() {
             </li>
           ))}
         </ul>
+        <Link href="/lab/3d" className="lab-teaser">
+          <strong>Explore my work in 3D →</strong>
+          <span>An accessible React Three Fiber scene that adapts to your device.</span>
+        </Link>
       </section>
 
       <section id="services" className="section container" aria-labelledby="services-title">
