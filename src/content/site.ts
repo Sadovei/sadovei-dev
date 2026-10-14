@@ -7,7 +7,7 @@ export const site = {
   email: "contact@sadovei.dev",
   linkedin: "https://www.linkedin.com/in/radu-sadovei/",
   // Cal.com booking link, e.g. "https://cal.com/radu-sadovei/intro". Leave empty to hide the booking button.
-  booking: "",
+  booking: "https://cal.com/radu-sadovei/intro",
   description:
     "Senior Frontend Developer and independent contractor. React, Next.js, React Native and TypeScript for products used by millions: The LEGO Group, SITA, RBC Capital Markets, PGL.",
 };
