@@ -12,6 +12,16 @@ export const site = {
     "Senior Frontend Developer and independent contractor. React, Next.js, React Native and TypeScript for products used by millions: The LEGO Group, SITA, RBC Capital Markets, PGL.",
 };
 
+// Sections of the homepage, in page order. Used by the header and the footer.
+export const nav = [
+  { id: "work", label: "Work" },
+  { id: "services", label: "Services" },
+  { id: "approach", label: "How I work" },
+  { id: "contact", label: "Contact" },
+] as const;
+
+export type SectionId = (typeof nav)[number]["id"];
+
 export const highlights = [
   { value: "73 markets", label: "kids.lego.com, 30 languages incl. RTL" },
   { value: "Millions", label: "of visitors to LEGO Hero Stories in two months" },

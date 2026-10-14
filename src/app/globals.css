@@ -34,6 +34,8 @@
 
 html {
   scroll-behavior: smooth;
+  /* No elastic bounce at the edges, so the sticky header never gets dragged down */
+  overscroll-behavior-y: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -111,7 +113,7 @@ a {
   position: absolute;
   left: 16px;
   top: -100px;
-  z-index: 10;
+  z-index: 30;
   padding: 10px 16px;
   background: var(--accent);
   color: var(--accent-ink);
@@ -124,8 +126,33 @@ a {
 
 /* Header & footer */
 .site-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
   border-bottom: 1px solid var(--rule);
-  background: var(--bg);
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  -webkit-backdrop-filter: saturate(160%) blur(12px);
+  backdrop-filter: saturate(160%) blur(12px);
+  transition:
+    transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 0.3s ease;
+  will-change: transform;
+}
+
+/* Keep it visible while a keyboard user is inside it */
+.site-header[data-state="hidden"]:not(:has(:focus-visible)) {
+  transform: translateY(-100%);
+}
+
+.site-header[data-state="shown"] {
+  box-shadow: 0 8px 24px -16px rgb(0 0 0 / 0.35);
+}
+
+/* Anchored sections land below the sticky header */
+main,
+section[id],
+article {
+  scroll-margin-top: 96px;
 }
 
 .site-header__inner {
@@ -133,8 +160,14 @@ a {
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 8px 24px;
-  padding-block: 18px;
+  gap: 4px 24px;
+  padding-block: 12px;
+}
+
+@media (min-width: 720px) {
+  .site-header__inner {
+    padding-block: 18px;
+  }
 }
 
 .site-header__name {
@@ -156,31 +189,122 @@ a {
 }
 
 .site-nav a {
+  position: relative;
+  display: inline-block;
+  padding-block: 4px;
   color: var(--muted);
   text-decoration: none;
+  transition: color 0.2s ease;
 }
 
-.site-nav a:hover {
+/* Underline that grows in under the current section */
+.site-nav a::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 -2px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.25s ease;
+}
+
+.site-nav a:hover,
+.site-nav a[aria-current="true"] {
   color: var(--ink);
 }
 
-.site-footer {
-  margin-top: 96px;
-  border-top: 1px solid var(--rule);
-  color: var(--muted);
-  font-size: 0.9rem;
+.site-nav a[aria-current="true"]::after {
+  transform: scaleX(1);
 }
 
-.site-footer__inner {
+/* Footer */
+.site-footer {
+  margin-top: 120px;
+  border-top: 1px solid var(--rule);
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.site-footer__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 40px 32px;
+  padding-block: 56px 40px;
+}
+
+.site-footer__brand {
+  grid-column: 1 / -1;
+  max-width: 34ch;
+}
+
+@media (min-width: 900px) {
+  .site-footer__grid {
+    grid-template-columns: 1.6fr repeat(3, minmax(0, 1fr));
+    padding-block: 72px 48px;
+  }
+  .site-footer__brand {
+    grid-column: auto;
+  }
+}
+
+.site-footer__name {
+  margin-bottom: 0.5em;
+  color: var(--ink);
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.site-footer__heading {
+  margin: 0 0 14px;
+  color: var(--ink);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.site-footer ul {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.site-footer a {
+  color: var(--muted);
+  text-decoration: none;
+  overflow-wrap: anywhere;
+  transition: color 0.2s ease;
+}
+
+.site-footer a:hover {
+  color: var(--accent);
+}
+
+.site-footer__bottom {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   justify-content: space-between;
-  gap: 8px 24px;
-  padding-block: 28px;
+  gap: 12px 24px;
+  padding-block: 24px;
+  border-top: 1px solid var(--rule);
+  font-size: 0.85rem;
 }
 
 .site-footer p {
   margin: 0;
+}
+
+.site-footer .site-footer__top {
+  color: var(--ink);
+  font-weight: 500;
 }
 
 /* Shared */
