@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { nav, site, type SectionId } from "@/content/site";
+import { ThemeToggle } from "./theme-toggle";
 
 // Continuous scroll distance needed before the header reacts, so jitter never makes it flicker.
 const HIDE_AFTER = 16;
@@ -96,22 +97,25 @@ export function SiteHeader() {
         <Link href="/" className="site-header__name">
           {site.name}
         </Link>
-        <nav aria-label="Main">
-          <ul className="site-nav">
-            {nav.map((item) => (
-              <li key={item.id}>
-                <Link href={`/#${item.id}`} aria-current={active === item.id ? "true" : undefined}>
-                  {item.label}
+        <div className="site-header__end">
+          <nav aria-label="Main">
+            <ul className="site-nav">
+              {nav.map((item) => (
+                <li key={item.id}>
+                  <Link href={`/#${item.id}`} aria-current={active === item.id ? "true" : undefined}>
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+              <li>
+                <Link href="/notes" aria-current={pathname.startsWith("/notes") ? "page" : undefined}>
+                  Notes
                 </Link>
               </li>
-            ))}
-            <li>
-              <Link href="/notes" aria-current={pathname.startsWith("/notes") ? "page" : undefined}>
-                Notes
-              </Link>
-            </li>
-          </ul>
-        </nav>
+            </ul>
+          </nav>
+          <ThemeToggle />
+        </div>
       </div>
     </header>
   );

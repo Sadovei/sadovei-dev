@@ -17,6 +17,7 @@ import * as THREE from "three";
 import { caseStudies } from "@/content/work";
 import { ChartModel, PlaneModel, ScreenModel, StarModel } from "./models";
 import { detectQualityTier, qualitySettings, readSavedTier, saveTier, type QualityTier } from "./quality";
+import { useTheme } from "@/components/theme";
 
 const MODELS: Record<string, { Model: ComponentType; height: number; short: string }> = {
   "lego-hero-stories": { Model: StarModel, height: 1.65, short: "LEGO" },
@@ -312,7 +313,7 @@ function Scene({ selected, hovered, motion, controls, dark, onSelect, onHover, b
 export function WorkScene() {
   const reducedMotion = useMediaQuery("(prefers-reduced-motion: reduce)");
   const finePointer = useMediaQuery("(pointer: fine)");
-  const dark = useMediaQuery("(prefers-color-scheme: dark)");
+  const dark = useTheme() === "dark";
   const motion = !reducedMotion;
 
   const [webgl] = useState(hasWebGL);

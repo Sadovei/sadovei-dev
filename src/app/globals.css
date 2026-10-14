@@ -12,8 +12,9 @@
   color-scheme: light;
 }
 
+/* Dark theme: follows the system unless the visitor picked a theme (html[data-theme]) */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     --bg: #0f1214;
     --surface: #151a1d;
     --ink: #e8edf0;
@@ -24,6 +25,18 @@
     --rule: #263036;
     color-scheme: dark;
   }
+}
+
+:root[data-theme="dark"] {
+  --bg: #0f1214;
+  --surface: #151a1d;
+  --ink: #e8edf0;
+  --muted: #9ba6b1;
+  --accent: #5cc3d3;
+  --accent-ink: #06272d;
+  --tint: #142328;
+  --rule: #263036;
+  color-scheme: dark;
 }
 
 *,
@@ -152,7 +165,7 @@ a {
 main,
 section[id],
 article {
-  scroll-margin-top: 96px;
+  scroll-margin-top: 112px;
 }
 
 .site-header__inner {
@@ -1129,14 +1142,24 @@ kbd {
 }
 
 @media (prefers-color-scheme: dark) {
-  .shiki,
-  .shiki span {
+  :root:not([data-theme="light"]) .shiki,
+  :root:not([data-theme="light"]) .shiki span {
     color: var(--shiki-dark) !important;
     background-color: var(--shiki-dark-bg) !important;
   }
-  .shiki span {
+  :root:not([data-theme="light"]) .shiki span {
     background-color: transparent !important;
   }
+}
+
+:root[data-theme="dark"] .shiki,
+:root[data-theme="dark"] .shiki span {
+  color: var(--shiki-dark) !important;
+  background-color: var(--shiki-dark-bg) !important;
+}
+
+:root[data-theme="dark"] .shiki span {
+  background-color: transparent !important;
 }
 
 /* Diagrams: inline SVG themed through CSS variables */
@@ -1296,5 +1319,63 @@ kbd {
 @media (max-width: 560px) {
   .author {
     flex-direction: column;
+  }
+}
+
+/* Theme toggle */
+.theme-toggle {
+  display: inline-grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 1px solid var(--rule);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.theme-toggle:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.site-header__end {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 20px;
+}
+
+/* Small screens: name and theme toggle on the first row, the whole nav on one row below */
+@media (max-width: 719px) {
+  .site-header__end {
+    display: contents;
+  }
+  .site-header .theme-toggle {
+    order: 2;
+    margin-left: auto;
+  }
+  .site-header nav {
+    order: 3;
+    flex-basis: 100%;
+    min-width: 0;
+  }
+  .site-nav {
+    flex-wrap: nowrap;
+    gap: 0 14px;
+    padding-bottom: 4px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .site-nav::-webkit-scrollbar {
+    display: none;
+  }
+  .site-nav a {
+    white-space: nowrap;
   }
 }

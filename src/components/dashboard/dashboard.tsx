@@ -11,6 +11,7 @@ import { Overview } from "./overview";
 import { Templates } from "./templates";
 import type { Contact, RadarJob } from "./types";
 import { useDashboard } from "./use-dashboard";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 const TABS = { overview: "Overview", jobs: "Job-uri", outreach: "Outreach", brokers: "Brokeri", templates: "Șabloane" } as const;
 type Tab = keyof typeof TABS;
@@ -129,6 +130,7 @@ export function Dashboard() {
             <button type="button" className={styles.btnSmall} onClick={signOut}>
               Ieși
             </button>
+            <ThemeToggle />
           </div>
         </div>
       </header>

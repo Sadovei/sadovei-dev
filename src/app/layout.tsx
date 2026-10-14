@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Source_Serif_4 } from "next/font/google";
 import { site } from "@/content/site";
+import { themeScript } from "@/components/theme";
 import "./globals.css";
 
 const inter = Inter({
@@ -34,7 +35,11 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${inter.variable} ${serif.variable}`}>
+    // The theme script sets data-theme before React hydrates, hence suppressHydrationWarning on <html>
+    <html lang="en" className={`${inter.variable} ${serif.variable}`} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body>{children}</body>
     </html>
   );
