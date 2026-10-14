@@ -122,6 +122,8 @@ type SpotProps = {
   highlighted: boolean;
   selected: boolean;
   compact: boolean;
+  // While zoomed in, focusing another hotspot flies to it so focus never lands off screen
+  followFocus: boolean;
   motion: boolean;
   onSelect: (slug: string) => void;
   onHover: (slug: string | null) => void;
@@ -136,6 +138,7 @@ function SpotObject({
   highlighted,
   selected,
   compact,
+  followFocus,
   motion,
   onSelect,
   onHover,
@@ -195,7 +198,10 @@ function SpotObject({
           className={`hotspot${highlighted ? " is-active" : ""}`}
           aria-pressed={selected}
           onClick={() => onSelect(spot.slug)}
-          onFocus={() => onHover(spot.slug)}
+          onFocus={() => {
+            onHover(spot.slug);
+            if (followFocus && !selected) onSelect(spot.slug);
+          }}
           onBlur={() => onHover(null)}
           onMouseEnter={() => onHover(spot.slug)}
           onMouseLeave={() => onHover(null)}
@@ -267,6 +273,7 @@ function Scene({ selected, hovered, motion, controls, dark, onSelect, onHover, b
           highlighted={hovered === spot.slug || selected === spot.slug}
           selected={selected === spot.slug}
           compact={narrow}
+          followFocus={selected !== null}
           motion={motion}
           onSelect={onSelect}
           onHover={onHover}

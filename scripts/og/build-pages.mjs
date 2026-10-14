@@ -5,6 +5,7 @@ import { mkdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { caseStudies } from "../../src/content/work.ts";
+import { notes } from "../../src/content/notes.ts";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const outDir = join(here, "../../public/og");
@@ -14,6 +15,7 @@ mkdirSync(outDir, { recursive: true });
 const pages = [
   ...caseStudies.map((study) => ({ slug: study.slug, eyebrow: `Case study · ${study.client}`, title: study.title })),
   { slug: "lab-3d", eyebrow: "Lab · React Three Fiber", title: "Explore my work in 3D" },
+  ...notes.map((note) => ({ slug: `note-${note.slug}`, eyebrow: `Notes · ${note.tags[0]}`, title: note.title })),
 ];
 
 for (const page of pages) {

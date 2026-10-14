@@ -105,6 +105,11 @@ export function SiteHeader() {
                 </Link>
               </li>
             ))}
+            <li>
+              <Link href="/notes" aria-current={pathname.startsWith("/notes") ? "page" : undefined}>
+                Notes
+              </Link>
+            </li>
           </ul>
         </nav>
       </div>

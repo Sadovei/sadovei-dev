@@ -4,6 +4,8 @@ import { approach, clients, firstWeeks, highlights, quickFacts, services, site }
 import { caseStudies } from "@/content/work";
 import { recommendationsUrl, testimonials } from "@/content/testimonials";
 import { QuoteCard } from "@/components/quote-card";
+import { NoteDate } from "@/components/note-date";
+import { notes } from "@/content/notes";
 
 const enquiry = `mailto:${site.email}?subject=Contract%20enquiry`;
 const featuredQuotes = testimonials.filter((t) => t.featured);
@@ -181,6 +183,28 @@ export default function Home() {
 
         <p className="clients">
           <span>Clients and teams:</span> {clients.join(" · ")}
+        </p>
+      </section>
+
+      <section id="notes" className="section container" aria-labelledby="notes-title">
+        <h2 id="notes-title" className="section__title">
+          Notes from the work
+        </h2>
+        <ul className="cards">
+          {notes.slice(0, 2).map((note) => (
+            <li key={note.slug} className="card">
+              <p className="card__client">
+                <NoteDate date={note.date} /> · {note.readingMinutes} min read
+              </p>
+              <h3 className="card__title">
+                <Link href={`/notes/${note.slug}`}>{note.title}</Link>
+              </h3>
+              <p>{note.description}</p>
+            </li>
+          ))}
+        </ul>
+        <p className="quotes__source">
+          <Link href="/notes">All notes →</Link>
         </p>
       </section>
 

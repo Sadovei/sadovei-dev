@@ -24,6 +24,9 @@ export function SiteFooter() {
                 </li>
               ))}
               <li>
+                <Link href="/notes">Notes</Link>
+              </li>
+              <li>
                 <Link href="/lab/3d">3D lab</Link>
               </li>
             </ul>
