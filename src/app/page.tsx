@@ -20,24 +20,24 @@ const jsonLd = {
   knowsAbout: ["React", "Next.js", "React Native", "TypeScript", "Three.js", "Web accessibility", "WCAG"],
 };
 
-function ContactActions() {
+function ContactActions({ place }: { place: "hero" | "contact" }) {
   return (
     <div className="actions">
       {site.booking ? (
         <>
-          <a className="button" href={site.booking} rel="noopener">
+          <a className="button" href={site.booking} rel="noopener" data-track={`book-call-${place}`}>
             Book a 20-minute intro call
           </a>
-          <a className="button button--ghost" href={enquiry}>
+          <a className="button button--ghost" href={enquiry} data-track={`email-${place}`}>
             Email me
           </a>
         </>
       ) : (
-        <a className="button" href={enquiry}>
+        <a className="button" href={enquiry} data-track={`email-${place}`}>
           Start a conversation
         </a>
       )}
-      <a className="button button--ghost" href={site.linkedin} rel="noopener">
+      <a className="button button--ghost" href={site.linkedin} rel="noopener" data-track={`linkedin-${place}`}>
         LinkedIn
       </a>
     </div>
@@ -60,7 +60,7 @@ export default function Home() {
             React, Next.js, React Native and TypeScript, with 7+ years of shipping for The LEGO Group, SITA, RBC
             Capital Markets and PGL. Remote from Bucharest, working with teams in the UK, the EU and North America.
           </p>
-          <ContactActions />
+          <ContactActions place="hero" />
         </div>
         <Image
           className="hero__photo"
@@ -151,13 +151,22 @@ export default function Home() {
             Tell me about the team, the product and the timeline. Recruiters are welcome too: the essentials are
             below.
           </p>
-          <ContactActions />
+          <ContactActions place="contact" />
         </div>
         <dl className="facts" aria-label="Quick facts">
           {quickFacts.map((fact) => (
             <div key={fact.label}>
               <dt>{fact.label}</dt>
-              <dd>{fact.value}</dd>
+              <dd>
+                {fact.href ? (
+                  <a href={fact.href} download data-track="download-cv">
+                    {fact.value}
+                  </a>
+                ) : (
+                  fact.value
+                )}
+                {fact.note && <span className="facts__note">, {fact.note}</span>}
+              </dd>
             </div>
           ))}
         </dl>

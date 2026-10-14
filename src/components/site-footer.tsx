@@ -42,16 +42,23 @@ export function SiteFooter() {
             <ul>
               {site.booking && (
                 <li>
-                  <a href={site.booking} rel="noopener">
+                  <a href={site.booking} rel="noopener" data-track="book-call-footer">
                     Book an intro call
                   </a>
                 </li>
               )}
               <li>
-                <a href={`mailto:${site.email}`}>{site.email}</a>
+                <a href={`mailto:${site.email}`} data-track="email-footer">
+                  {site.email}
+                </a>
               </li>
               <li>
-                <a href={site.linkedin} rel="noopener">
+                <a href={site.cv} download data-track="download-cv-footer">
+                  Download CV (PDF)
+                </a>
+              </li>
+              <li>
+                <a href={site.linkedin} rel="noopener" data-track="linkedin-footer">
                   LinkedIn
                 </a>
               </li>
@@ -62,6 +69,7 @@ export function SiteFooter() {
         <div className="site-footer__bottom">
           <p>
             © 2026 {site.company} · {site.location}
+            {site.goatcounter && <> · Cookie-free, anonymous visit statistics</>}
           </p>
           <a href="#main" className="site-footer__top">
             Back to top <span aria-hidden="true">↑</span>

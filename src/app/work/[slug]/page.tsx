@@ -74,7 +74,7 @@ export default async function CaseStudyPage({ params }: PageProps<"/work/[slug]"
 
       {study.link && (
         <p>
-          <a className="button button--ghost" href={study.link.href} rel="noopener">
+          <a className="button button--ghost" href={study.link.href} rel="noopener" data-track={`live-${study.slug}`}>
             {study.link.label}
           </a>
         </p>

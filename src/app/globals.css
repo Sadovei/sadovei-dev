@@ -594,6 +594,10 @@ article {
   margin: 2px 0 0;
 }
 
+.facts__note {
+  color: var(--muted);
+}
+
 /* Case study */
 .case {
   max-width: 820px;

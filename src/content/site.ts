@@ -8,6 +8,9 @@ export const site = {
   linkedin: "https://www.linkedin.com/in/radu-sadovei/",
   // Cal.com booking link, e.g. "https://cal.com/radu-sadovei/intro". Leave empty to hide the booking button.
   booking: "https://cal.com/radu-sadovei/intro",
+  cv: "/Radu-Sadovei-Senior-Frontend-Developer-CV.pdf",
+  // GoatCounter site code, e.g. "sadovei" for sadovei.goatcounter.com. Leave empty to turn analytics off.
+  goatcounter: "",
   description:
     "Senior Frontend Developer and independent contractor. React, Next.js, React Native and TypeScript for products used by millions: The LEGO Group, SITA, RBC Capital Markets, PGL.",
 };
@@ -82,11 +85,11 @@ export const firstWeeks = [
 ];
 
 // Answers the questions recruiters and hiring managers ask first.
-export const quickFacts = [
+export const quickFacts: { label: string; value: string; href?: string; note?: string }[] = [
   { label: "Role", value: "Senior Frontend Developer: React, Next.js, React Native, TypeScript" },
   { label: "Engagement", value: "B2B contract through Sadovei Software Company, invoicing EU and UK clients" },
   { label: "Location", value: "Bucharest, Romania · remote, on-site visits on request" },
   { label: "Time zones", value: "Full overlap with UK and EU, mornings with the US East Coast" },
   { label: "Languages", value: "English (C1), Romanian (native)" },
-  { label: "CV", value: "On request, by email or after a short call" },
+  { label: "CV", value: "Download the PDF", href: site.cv, note: "a detailed version is available on request" },
 ];
