@@ -17,7 +17,7 @@ const blank = (): Template => ({ id: newId(), updatedAt: "", title: "", channel:
 export function Templates({ templates, onSave }: { templates: Template[]; onSave: (t: Template, deleted?: boolean) => void }) {
   const [editing, setEditing] = useState<Template | null>(null);
   const [copied, setCopied] = useState<string | null>(null);
-  const rows = templates.filter((t) => !t.deleted).sort((a, b) => a.title.localeCompare(b.title));
+  const rows = templates.filter((t) => !t.deleted).sort((a, b) => a.title.localeCompare(b.title, undefined, { numeric: true }));
 
   return (
     <>

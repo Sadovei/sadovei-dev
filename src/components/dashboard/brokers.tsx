@@ -8,6 +8,9 @@ import type { Broker } from "./types";
 
 const PROFILE = { no: "Fără profil", created: "Profil creat", active: "Activ, în discuții" };
 
+// Brokers you already work with first, then the ones with a profile, then the rest
+const RANK: Record<Broker["profile"], number> = { active: 0, created: 1, no: 2 };
+
 const FIELDS: Field<Broker>[] = [
   { key: "name", label: "Broker / agenție", required: true },
   { key: "market", label: "Piață", placeholder: "UK, Nordice, NL, DACH…" },
@@ -22,7 +25,9 @@ const blank = (): Broker => ({ id: newId(), updatedAt: "", name: "", market: "",
 
 export function Brokers({ brokers, onSave }: { brokers: Broker[]; onSave: (broker: Broker, deleted?: boolean) => void }) {
   const [editing, setEditing] = useState<Broker | null>(null);
-  const rows = brokers.filter((b) => !b.deleted).sort((a, b) => a.market.localeCompare(b.market) || a.name.localeCompare(b.name));
+  const rows = brokers
+    .filter((b) => !b.deleted)
+    .sort((a, b) => RANK[a.profile] - RANK[b.profile] || a.market.localeCompare(b.market) || a.name.localeCompare(b.name));
 
   return (
     <>
