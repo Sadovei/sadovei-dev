@@ -7,6 +7,12 @@ export const metadata: Metadata = {
   description:
     "An accessible React Three Fiber scene: keyboard and screen-reader friendly hotspots, device-based quality tiers and no wasted frames.",
   alternates: { canonical: "/lab/3d/" },
+  openGraph: {
+    url: "/lab/3d/",
+    title: "Explore my work in 3D",
+    description: "An accessible React Three Fiber scene that adapts to your device.",
+    images: [{ url: "/og/lab-3d.png", width: 1200, height: 630, alt: "Explore my work in 3D" }],
+  },
 };
 
 export default function LabPage() {

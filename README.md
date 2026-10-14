@@ -19,7 +19,12 @@ All copy lives in `src/content/`:
 - `site.ts`: profile, highlights, services, quick facts and the booking link
 - `work.ts`: case studies, one page each under `/work/[slug]/`
 
-The link-preview image (`public/og.png`) is rendered from `scripts/og/og.html` with `scripts/og/build.sh`.
+Link-preview images:
+
+- `public/og.png` (homepage): `scripts/og/build.sh`
+- `public/og/<slug>.png` (case studies and the 3D lab, generated from `src/content/work.ts`): `node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/og/build-pages.mjs`
+
+Re-run them after changing a title.
 
 ## Deploy
 

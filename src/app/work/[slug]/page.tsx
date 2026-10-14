@@ -13,10 +13,18 @@ export async function generateMetadata({ params }: PageProps<"/work/[slug]">): P
   const { slug } = await params;
   const study = getCaseStudy(slug);
   if (!study) return {};
+  const title = `${study.title} (${study.client})`;
   return {
-    title: `${study.title} (${study.client})`,
+    title,
     description: study.summary,
     alternates: { canonical: `/work/${study.slug}/` },
+    openGraph: {
+      type: "article",
+      url: `/work/${study.slug}/`,
+      title,
+      description: study.summary,
+      images: [{ url: `/og/${study.slug}.png`, width: 1200, height: 630, alt: title }],
+    },
   };
 }
 

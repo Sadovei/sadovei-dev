@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<style>
+  @font-face { font-family: "Inter"; src: url("fonts/Inter-500-latin.woff2") format("woff2"); font-weight: 100 900; }
+  @font-face { font-family: "Source Serif 4"; src: url("fonts/SourceSerif4-600-latin.woff2") format("woff2"); font-weight: 600; }
+  * { margin: 0; box-sizing: border-box; }
+  html, body { width: 1200px; height: 630px; }
+  body {
+    display: flex; flex-direction: column; justify-content: space-between; padding: 72px 88px 64px;
+    background: radial-gradient(120% 120% at 85% 0%, #142328 0%, #0f1214 60%); color: #e8edf0;
+    font-family: "Inter", sans-serif;
+  }
+  .eyebrow { color: #5cc3d3; font-size: 24px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; }
+  h1 { font-family: "Source Serif 4", serif; font-weight: 600; font-size: 64px; line-height: 1.08; margin-top: 22px; max-width: 980px; }
+  footer { display: flex; align-items: center; gap: 22px; }
+  img { width: 76px; height: 76px; border-radius: 50%; object-fit: cover; border: 3px solid #142328; }
+  .who { font-size: 26px; }
+  .who b { display: block; font-weight: 600; color: #e8edf0; }
+  .who span { color: #9ba6b1; }
+  .url { margin-left: auto; color: #5cc3d3; font-size: 26px; font-weight: 600; }
+</style>
+</head>
+<body>
+  <div>
+    <p class="eyebrow" id="eyebrow"></p>
+    <h1 id="title"></h1>
+  </div>
+  <footer>
+    <img src="photo.jpg" alt="">
+    <p class="who"><b>Radu Sadovei</b><span>Senior Frontend Developer · React, Next.js</span></p>
+    <p class="url">sadovei.dev</p>
+  </footer>
+  <script>
+    const params = new URLSearchParams(location.search);
+    document.getElementById("eyebrow").textContent = params.get("eyebrow");
+    document.getElementById("title").textContent = params.get("title");
+  </script>
+</body>
+</html>
