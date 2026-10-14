@@ -50,10 +50,10 @@ function LifecycleDiagram() {
           <path d="M350 185 H560" className="d-link" markerEnd="url(#arrow-q)" />
           <text x="380" y="176" className="d-note">too many attempts</text>
 
-          <rect x="560" y="30" width="140" height="70" rx="10" className="d-box" />
+          <rect x="560" y="30" width="140" height="92" rx="10" className="d-box" />
           <text x="576" y="60" className="d-label">Queue</text>
           <text x="576" y="82" className="d-note">one at a time,</text>
-          <text x="576" y="98" className="d-note">oldest first</text>
+          <text x="576" y="102" className="d-note">oldest first</text>
         </svg>
       </div>
       <figcaption>The message is on screen instantly. The network only decides when it says “sent”.</figcaption>

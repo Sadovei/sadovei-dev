@@ -2,7 +2,7 @@ import { Code } from "@/components/code";
 
 function StagesDiagram() {
   const lanes = [
-    { label: "Hero video (LCP)", x: 150, w: 190, cls: "d-bar d-bar-strong", note: "high priority, nothing competes" },
+    { label: "Hero video (LCP)", x: 150, w: 140, cls: "d-bar d-bar-strong", note: "high priority" },
     { label: "Visible model", x: 300, w: 150, cls: "d-bar", note: "in view · 15 at a time · low priority" },
     { label: "Neighbours", x: 450, w: 120, cls: "d-bar d-bar-soft", note: "browser idle · 6 at a time" },
     { label: "Everything else", x: 570, w: 130, cls: "d-bar d-bar-faint", note: "first drag · 3 at a time" },
@@ -10,7 +10,7 @@ function StagesDiagram() {
   return (
     <figure className="diagram">
       <div className="diagram__scroll" tabIndex={0}>
-        <svg viewBox="0 0 720 300" role="img" aria-labelledby="stages-title stages-desc">
+        <svg viewBox="-20 -12 750 312" role="img" aria-labelledby="stages-title stages-desc">
           <title id="stages-title">Staged loading timeline for a 360° viewer</title>
           <desc id="stages-desc">
             The hero video loads first with nothing competing. The visible model&apos;s frames start only when the viewer
@@ -36,8 +36,8 @@ function StagesDiagram() {
               </g>
             );
           })}
-          <line x1="300" y1="20" x2="300" y2="262" className="d-marker" />
-          <text x="306" y="18" className="d-note">viewer scrolls into view</text>
+          <line x1="300" y1="24" x2="300" y2="90" className="d-marker" />
+          <text x="300" y="16" className="d-note">viewer scrolls into view</text>
         </svg>
       </div>
       <figcaption>Each stage waits for a real signal: visibility, idle time, or the user actually touching the viewer.</figcaption>

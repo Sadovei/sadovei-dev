@@ -33,3 +33,7 @@ Every push to `main` runs `.github/workflows/deploy.yml`, which lints, builds an
 ## Dashboard
 
 `/dashboard/` is a private tool (not linked, `noindex`, no analytics). The page holds no data: it signs in with a fine-grained GitHub token scoped to the private `Sadovei/job-radar` repo and reads and writes everything there through the GitHub API (`data/` from the radar, `tracker/tracker.json` for outreach, brokers and templates). A Content Security Policy only allows requests to `api.github.com`.
+
+## Diagram QA
+
+`scripts/qa/diagram-check.js` checks every `.diagram` SVG on a page for text that spills out of its box, sits too close to an edge, overlaps other text or has a line drawn across it. Paste it into the browser console on a note page (or `page.evaluate` it in Playwright); an empty array means the layout is clean.

@@ -23,8 +23,8 @@ function LayersDiagram() {
           <text x="40" y="72" className="d-note">Tab · Enter · Escape · screen readers</text>
           {[60, 190, 320].map((x, i) => (
             <g key={x}>
-              <rect x={x} y="88" width="110" height="32" rx="16" className={i === 1 ? "d-pill d-pill-active" : "d-pill"} />
-              <text x={x + 55} y="109" textAnchor="middle" className={i === 1 ? "d-pill-text d-pill-text-active" : "d-pill-text"}>
+              <rect x={x} y="84" width="110" height="38" rx="19" className={i === 1 ? "d-pill d-pill-active" : "d-pill"} />
+              <text x={x + 55} y="108" textAnchor="middle" className={i === 1 ? "d-pill-text d-pill-text-active" : "d-pill-text"}>
                 {["Hotspot A", "Hotspot B", "Hotspot C"][i]}
               </text>
             </g>
