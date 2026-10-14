@@ -2,8 +2,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { approach, clients, firstWeeks, highlights, quickFacts, services, site } from "@/content/site";
 import { caseStudies } from "@/content/work";
+import { recommendationsUrl, testimonials } from "@/content/testimonials";
+import { QuoteCard } from "@/components/quote-card";
 
 const enquiry = `mailto:${site.email}?subject=Contract%20enquiry`;
+const featuredQuotes = testimonials.filter((t) => t.featured);
+const moreQuotes = testimonials.filter((t) => !t.featured);
 
 // Lets search engines show a rich result for the person and the company.
 const jsonLd = {
@@ -107,6 +111,38 @@ export default function Home() {
           <strong>Explore my work in 3D →</strong>
           <span>An accessible React Three Fiber scene that adapts to your device.</span>
         </Link>
+      </section>
+
+      <section id="recommendations" className="section container" aria-labelledby="quotes-title">
+        <h2 id="quotes-title" className="section__title">
+          What people I&apos;ve worked with say
+        </h2>
+        <ul className="quotes">
+          {featuredQuotes.map((t) => (
+            <li key={t.name}>
+              <QuoteCard testimonial={t} />
+            </li>
+          ))}
+        </ul>
+        {moreQuotes.length > 0 && (
+          <details className="quotes__more">
+            <summary>Show {moreQuotes.length} more recommendations</summary>
+            <ul className="quotes">
+              {moreQuotes.map((t) => (
+                <li key={t.name}>
+                  <QuoteCard testimonial={t} />
+                </li>
+              ))}
+            </ul>
+          </details>
+        )}
+        <p className="quotes__source">
+          Excerpts from recommendations on{" "}
+          <a href={recommendationsUrl} rel="noopener">
+            LinkedIn
+          </a>
+          .
+        </p>
       </section>
 
       <section id="services" className="section container" aria-labelledby="services-title">

@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { caseStudies, getCaseStudy } from "@/content/work";
+import { testimonials } from "@/content/testimonials";
+import { QuoteCard } from "@/components/quote-card";
 
 export const dynamicParams = false;
 
@@ -33,6 +35,7 @@ export default async function CaseStudyPage({ params }: PageProps<"/work/[slug]"
   const study = getCaseStudy(slug);
   if (!study) notFound();
 
+  const quotes = testimonials.filter((t) => t.caseStudy === study.slug);
   const index = caseStudies.indexOf(study);
   const next = caseStudies[(index + 1) % caseStudies.length];
 
@@ -79,6 +82,19 @@ export default async function CaseStudyPage({ params }: PageProps<"/work/[slug]"
           ))}
         </ul>
       </section>
+
+      {quotes.length > 0 && (
+        <section aria-labelledby="team-said">
+          <h2 id="team-said">What the team said</h2>
+          <ul className="quotes quotes--stack">
+            {quotes.map((t) => (
+              <li key={t.name}>
+                <QuoteCard testimonial={t} />
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       {study.link && (
         <p>
