@@ -783,6 +783,88 @@ kbd {
   color: var(--accent-ink);
 }
 
+.lab__chip,
+.lab__arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: 1px solid var(--rule);
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 6px 16px -10px rgb(0 0 0 / 0.4);
+  color: var(--ink);
+  cursor: pointer;
+  font: 600 0.85rem / 1 var(--font-sans), system-ui, sans-serif;
+  transition:
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.lab__chip:hover,
+.lab__arrow:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.lab__overview {
+  height: 40px;
+  padding: 0 14px;
+  border-radius: 999px;
+}
+
+/* Full-width strip so it never gets squeezed; only the buttons take pointer events */
+.lab__nav {
+  position: absolute;
+  inset: auto 0 14px;
+  z-index: 11;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding-inline: 12px;
+  pointer-events: none;
+}
+
+.lab__nav > * {
+  pointer-events: auto;
+}
+
+@media (max-width: 420px) {
+  .lab__overview-label {
+    display: none;
+  }
+  .lab__overview {
+    width: 40px;
+    padding: 0;
+  }
+}
+
+.lab__arrow {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.lab__position {
+  min-width: 92px;
+  margin: 0;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  color: var(--ink);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.lab__position span {
+  color: var(--muted);
+  font-weight: 500;
+}
+
 .lab__toolbar {
   display: flex;
   flex-wrap: wrap;

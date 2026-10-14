@@ -333,7 +333,14 @@ export function WorkScene() {
     saveTier(next);
   };
 
-  const current = spots.find((spot) => spot.slug === selected);
+  const index = spots.findIndex((spot) => spot.slug === selected);
+  const current = index >= 0 ? spots[index] : undefined;
+
+  // Step through the projects; from the overview, start at the first or the last one
+  const go = (direction: 1 | -1) => {
+    const next = index < 0 ? (direction === 1 ? 0 : spots.length - 1) : (index + direction + spots.length) % spots.length;
+    setSelected(spots[next].slug);
+  };
   const settings = qualitySettings[tier];
   const frameloop = !visible ? "never" : motion ? "always" : "demand";
 
@@ -358,11 +365,15 @@ export function WorkScene() {
     <div
       onKeyDown={(event) => {
         if (event.key === "Escape" && selected) back();
+        else if (event.key === "ArrowRight") go(1);
+        else if (event.key === "ArrowLeft") go(-1);
+        else return;
+        event.preventDefault();
       }}
     >
       <p id="lab-instructions" className="visually-hidden">
-        Interactive 3D scene with four projects. Use Tab to move between them and Enter to select one. Press Escape to
-        return to the overview.
+        Interactive 3D scene with four projects. Use Tab to move between them and Enter to select one, or the left and
+        right arrow keys to step through them. Press Escape to return to the overview.
       </p>
       <div ref={stage} className="lab__stage" aria-describedby="lab-instructions">
         <Canvas
@@ -386,6 +397,39 @@ export function WorkScene() {
           />
         </Canvas>
         <div ref={overlay} className="lab__overlay" />
+
+        <div className="lab__nav">
+          {current && (
+            <button type="button" className="lab__chip lab__overview" onClick={back} aria-label="Back to overview">
+              <svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true">
+                <path d="M3 8V3h5M17 8V3h-5M3 12v5h5M17 12v5h-5" fill="none" stroke="currentColor" strokeWidth="1.8" />
+              </svg>
+              <span className="lab__overview-label">Overview</span>
+            </button>
+          )}
+          <button type="button" className="lab__arrow" onClick={() => go(-1)} aria-label="Previous project">
+            <svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true">
+              <path d="M12.5 4 6.5 10l6 6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+            </svg>
+          </button>
+          <p className="lab__position" aria-hidden="true">
+            {current ? (
+              <>
+                <span>
+                  {index + 1} / {spots.length}
+                </span>{" "}
+                {current.short}
+              </>
+            ) : (
+              "Overview"
+            )}
+          </p>
+          <button type="button" className="lab__arrow" onClick={() => go(1)} aria-label="Next project">
+            <svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true">
+              <path d="m7.5 4 6 6-6 6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+            </svg>
+          </button>
+        </div>
       </div>
 
       <div className="lab__toolbar">
@@ -427,7 +471,8 @@ export function WorkScene() {
           </>
         ) : (
           <p className="lab__hint">
-            Select a project in the scene: click or tap it, or use <kbd>Tab</kbd> and <kbd>Enter</kbd>.
+            Select a project in the scene by clicking or tapping it, or step through them with the arrows (
+            <kbd>←</kbd> <kbd>→</kbd> on a keyboard).
             {finePointer && " Drag to look around."}
           </p>
         )}
