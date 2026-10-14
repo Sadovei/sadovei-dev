@@ -10,7 +10,7 @@ export const site = {
   booking: "https://cal.com/radu-sadovei/intro",
   cv: "/Radu-Sadovei-Senior-Frontend-Developer-CV.pdf",
   // GoatCounter site code, e.g. "sadovei" for sadovei.goatcounter.com. Leave empty to turn analytics off.
-  goatcounter: "",
+  goatcounter: "sadovei",
   description:
     "Senior Frontend Developer and independent contractor. React, Next.js, React Native and TypeScript for products used by millions: The LEGO Group, SITA, RBC Capital Markets, PGL.",
 };
