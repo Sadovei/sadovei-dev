@@ -40,7 +40,8 @@ export const testimonials: Testimonial[] = [
     quote:
       "Radu is an outstanding software developer characterized by rigor, speed, and great technical discipline. I was consistently impressed by his commitment to quality—he never leaves things half-done and always delivers solid solutions.",
     name: "Andra Ioana Achim",
-    role: "Senior QA Engineer",
+    role: "Senior QA Engineer, SITA",
+    caseStudy: "sita-mission-watch",
     featured: true,
   },
   {
