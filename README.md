@@ -29,3 +29,7 @@ Re-run them after changing a title.
 ## Deploy
 
 Every push to `main` runs `.github/workflows/deploy.yml`, which lints, builds and publishes `./out` to GitHub Pages.
+
+## Dashboard
+
+`/dashboard/` is a private tool (not linked, `noindex`, no analytics). The page holds no data: it signs in with a fine-grained GitHub token scoped to the private `Sadovei/job-radar` repo and reads and writes everything there through the GitHub API (`data/` from the radar, `tracker/tracker.json` for outreach, brokers and templates). A Content Security Policy only allows requests to `api.github.com`.
