@@ -19,6 +19,7 @@ type Props = {
 };
 
 const LINKS = [
+  ["Ghid Sales Navigator", "https://github.com/Sadovei/job-radar/blob/main/docs/sales-navigator.md"],
   ["Rezumatele radarului", "https://github.com/Sadovei/job-radar/issues?q=label%3Aradar"],
   ["Statistici site (GoatCounter)", "https://sadovei.goatcounter.com/"],
   ["Programări (Cal.com)", "https://app.cal.com/bookings/upcoming"],
