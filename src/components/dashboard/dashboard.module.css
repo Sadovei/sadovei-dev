@@ -268,7 +268,7 @@
 /* Overview */
 .kpis {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr));
   gap: 12px;
   margin-bottom: 24px;
 }
@@ -466,4 +466,163 @@
   gap: 8px;
   margin: 12px 0 18px;
   font-size: 0.9rem;
+}
+
+/* Site tab: chart marks use a validated step of the brand teal (passes chroma and 3:1 contrast on both surfaces) */
+.app {
+  --chart: #0485a1;
+}
+@media (prefers-color-scheme: dark) {
+  :global(:root:not([data-theme="light"])) .app {
+    --chart: #20a7ba;
+  }
+}
+:global(:root[data-theme="dark"]) .app {
+  --chart: #20a7ba;
+}
+
+.kpiLink {
+  font: inherit;
+  text-align: left;
+  color: inherit;
+  cursor: pointer;
+}
+.kpiLink:hover {
+  border-color: var(--accent);
+}
+.kpi strong small {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.steps {
+  margin: 0;
+  padding-left: 1.2em;
+  line-height: 1.7;
+}
+.steps code,
+.card code {
+  font-size: 0.85em;
+  overflow-wrap: anywhere;
+}
+
+.chart {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 8px;
+  padding-top: 34px; /* room for the tooltip above the tallest bar */
+}
+.yAxis {
+  position: relative;
+  height: 160px;
+  min-width: 2.5ch;
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+}
+.yAxis span {
+  position: absolute;
+  right: 0;
+  transform: translateY(50%);
+}
+.plot {
+  position: relative;
+  height: 160px;
+  display: flex;
+  gap: 2px;
+  border-bottom: 1px solid var(--rule);
+}
+.gridline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  border-top: 1px solid var(--rule);
+  pointer-events: none;
+}
+/* The whole column is the hit target, not just the painted bar */
+.col {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  outline: none;
+}
+.col:focus-visible {
+  border-radius: 4px;
+  box-shadow: inset 0 0 0 2px var(--accent);
+}
+.colBar {
+  width: 100%;
+  max-width: 24px;
+  border-radius: 4px 4px 0 0;
+  background: var(--chart);
+}
+.col:hover .colBar,
+.col:focus-visible .colBar {
+  opacity: 0.75;
+}
+.tip {
+  position: absolute;
+  top: -6px;
+  z-index: 2;
+  padding: 4px 8px;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  background: var(--bg);
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.12);
+  font-size: 0.8rem;
+  white-space: nowrap;
+  pointer-events: none;
+}
+.xAxis {
+  grid-column: 2;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+.tableView {
+  margin-top: 12px;
+  font-size: 0.85rem;
+}
+.tableView summary {
+  color: var(--muted);
+  cursor: pointer;
+}
+.tableView table {
+  margin-top: 8px;
+}
+
+.num {
+  font-variant-numeric: tabular-nums;
+}
+.table td.numCol {
+  width: 5rem;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.meterCell {
+  width: 38%;
+  min-width: 72px;
+}
+.meter {
+  display: block;
+  height: 6px;
+  margin-top: 4px;
+  border-radius: 0 4px 4px 0;
+  background: var(--chart);
+}
+.break {
+  overflow-wrap: break-word;
+}
+.ink {
+  color: var(--ink);
+}
+.seen {
+  color: var(--accent);
+  font-weight: 600;
 }

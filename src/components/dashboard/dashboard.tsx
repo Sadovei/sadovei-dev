@@ -4,16 +4,17 @@ import { useEffect, useState, type FormEvent } from "react";
 import { Brokers } from "./brokers";
 import styles from "./dashboard.module.css";
 import { refLink } from "./format";
-import { runRadar } from "./github";
+import { runRadar, runSiteStats } from "./github";
 import { Jobs } from "./jobs";
 import { blankContact, Outreach } from "./outreach";
 import { Overview } from "./overview";
+import { Site } from "./site";
 import { Templates } from "./templates";
 import type { Contact, RadarJob } from "./types";
 import { useDashboard } from "./use-dashboard";
 import { ThemeToggle } from "@/components/theme-toggle";
 
-const TABS = { overview: "Overview", jobs: "Job-uri", outreach: "Outreach", brokers: "Brokeri", templates: "Șabloane" } as const;
+const TABS = { overview: "Overview", jobs: "Job-uri", outreach: "Outreach", site: "Site", brokers: "Brokeri", templates: "Șabloane" } as const;
 type Tab = keyof typeof TABS;
 
 function useHashTab(): [Tab, (tab: Tab) => void] {
@@ -75,11 +76,12 @@ export function Dashboard() {
   const [tab, setTab] = useHashTab();
   const [editingContact, setEditingContact] = useState<Contact | null>(null);
   const [radarState, setRadarState] = useState<"idle" | "running" | "started" | "error">("idle");
+  const [statsState, setStatsState] = useState<"idle" | "running" | "started" | "error">("idle");
 
   if (state.status === "loading") return <p className={styles.empty}>Se încarcă datele…</p>;
   if (state.status === "signed-out") return <SignIn onSubmit={signIn} error={state.error} />;
 
-  const { tracker, jobs, meta } = state;
+  const { tracker, jobs, meta, siteStats } = state;
 
   const toOutreach = (job: RadarJob) => {
     setTab("outreach");
@@ -93,6 +95,22 @@ export function Dashboard() {
         notes: `${job.title} · ${job.location}\n${job.url}`,
       }),
     );
+  };
+
+  const onRunSiteStats = async () => {
+    if (!token.current) return;
+    setStatsState("running");
+    try {
+      await runSiteStats(token.current);
+      setStatsState("started");
+    } catch {
+      setStatsState("error");
+    }
+  };
+
+  const openContact = (contact: Contact) => {
+    setTab("outreach");
+    setEditingContact(contact);
   };
 
   const onRunRadar = async () => {
@@ -142,10 +160,8 @@ export function Dashboard() {
             meta={meta}
             contacts={tracker.contacts}
             marks={tracker.jobs}
-            onOpenContact={(c) => {
-              setTab("outreach");
-              setEditingContact(c);
-            }}
+            siteStats={siteStats}
+            onOpenContact={openContact}
             onGo={(next) => setTab(next as Tab)}
             onRunRadar={onRunRadar}
             radarState={radarState}
@@ -153,8 +169,15 @@ export function Dashboard() {
         )}
         {tab === "jobs" && <Jobs jobs={jobs} marks={tracker.jobs} onMark={(mark) => update("jobs", mark)} onOutreach={toOutreach} />}
         {tab === "outreach" && (
-          <Outreach contacts={tracker.contacts} onSave={(c, deleted) => update("contacts", c, deleted)} editing={editingContact} setEditing={setEditingContact} />
+          <Outreach
+            contacts={tracker.contacts}
+            siteStats={siteStats}
+            onSave={(c, deleted) => update("contacts", c, deleted)}
+            editing={editingContact}
+            setEditing={setEditingContact}
+          />
         )}
+        {tab === "site" && <Site stats={siteStats} contacts={tracker.contacts} onOpenContact={openContact} onRun={onRunSiteStats} runState={statsState} />}
         {tab === "brokers" && <Brokers brokers={tracker.brokers} onSave={(b, deleted) => update("brokers", b, deleted)} />}
         {tab === "templates" && <Templates templates={tracker.templates} onSave={(t, deleted) => update("templates", t, deleted)} />}
       </main>

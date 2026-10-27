@@ -31,6 +31,16 @@ export function slug(value: string) {
 
 export const refLink = (company: string) => `https://sadovei.dev/?ref=${slug(company)}`;
 
+// Every ?ref= value a contact may have received: the saved link, any link in the message, and the company slug
+export function refsOf(contact: { refLink: string; message: string; company: string }) {
+  const refs = new Set<string>();
+  for (const text of [contact.refLink, contact.message]) {
+    for (const match of (text ?? "").matchAll(/[?&]ref=([\w-]+)/g)) refs.add(match[1].toLowerCase());
+  }
+  if (contact.company) refs.add(slug(contact.company));
+  return refs;
+}
+
 export function downloadCsv(filename: string, rows: Record<string, unknown>[]) {
   if (!rows.length) return;
   const headers = Object.keys(rows[0]);

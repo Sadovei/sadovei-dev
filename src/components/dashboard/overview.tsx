@@ -2,7 +2,8 @@
 
 import styles from "./dashboard.module.css";
 import { daysAgo, daysBefore, formatDate, pay, today } from "./format";
-import { STAGES, type Contact, type JobMark, type RadarJob, type RadarMeta, type Stage } from "./types";
+import { contactVisits } from "./site-data";
+import { STAGES, type Contact, type JobMark, type RadarJob, type RadarMeta, type SiteStats, type Stage } from "./types";
 
 const REPLIED: Stage[] = ["replied", "call", "interview", "offer", "won"];
 const CLOSED: Stage[] = ["won", "lost", "no_reply"];
@@ -12,6 +13,7 @@ type Props = {
   meta: RadarMeta | null;
   contacts: Contact[];
   marks: JobMark[];
+  siteStats: SiteStats | null;
   onOpenContact: (contact: Contact) => void;
   onGo: (tab: string) => void;
   onRunRadar: () => void;
@@ -27,12 +29,13 @@ const LINKS = [
   ["Site", "https://sadovei.dev/"],
 ] as const;
 
-export function Overview({ jobs, meta, contacts, marks, onOpenContact, onGo, onRunRadar, radarState }: Props) {
+export function Overview({ jobs, meta, contacts, marks, siteStats, onOpenContact, onGo, onRunRadar, radarState }: Props) {
   const now = today();
   const week = daysBefore(7);
   const live = contacts.filter((c) => !c.deleted);
   const contacted = live.filter((c) => c.stage !== "to_contact");
   const replied = live.filter((c) => REPLIED.includes(c.stage));
+  const openedSite = contacted.filter((c) => contactVisits(c, siteStats)).length;
   const due = live
     .filter((c) => !CLOSED.includes(c.stage) && c.nextFollowUp && c.nextFollowUp <= now)
     .sort((a, b) => a.nextFollowUp.localeCompare(b.nextFollowUp));
@@ -62,6 +65,10 @@ export function Overview({ jobs, meta, contacts, marks, onOpenContact, onGo, onR
           <strong>{contacted.length ? Math.round((replied.length / contacted.length) * 100) : 0}%</strong>
           <span>rată de răspuns ({replied.length})</span>
         </div>
+        <button type="button" className={`${styles.kpi} ${styles.kpiLink}`} onClick={() => onGo("site")}>
+          <strong>{siteStats ? openedSite : "–"}</strong>
+          <span>ți-au deschis site-ul din mesaje →</span>
+        </button>
         <div className={styles.kpi}>
           <strong>{live.filter((c) => c.stage === "call" || c.stage === "interview").length}</strong>
           <span>call-uri și interviuri</span>

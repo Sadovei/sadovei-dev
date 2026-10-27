@@ -4,7 +4,8 @@ import { useMemo, useState } from "react";
 import styles from "./dashboard.module.css";
 import { copy, downloadCsv, formatDate, newId, refLink, today } from "./format";
 import { RecordDialog, type Field } from "./record-dialog";
-import { CHANNELS, ROLES, STAGES, type Contact, type Stage } from "./types";
+import { contactVisits } from "./site-data";
+import { CHANNELS, ROLES, STAGES, type Contact, type SiteStats, type Stage } from "./types";
 
 const FIELDS: Field<Contact>[] = [
   { key: "name", label: "Nume", required: true },
@@ -45,14 +46,22 @@ export const blankContact = (patch: Partial<Contact> = {}): Contact => ({
 
 const CLOSED: Stage[] = ["won", "lost", "no_reply"];
 
+// Whether this contact opened sadovei.dev through their ?ref= link (from the GoatCounter stats)
+function SiteSeen({ contact, stats }: { contact: Contact; stats: SiteStats | null }) {
+  const seen = contactVisits(contact, stats);
+  if (seen) return <span className={styles.seen} title={`?ref=${seen.refs.join(", ")} · prima vizită ${formatDate(seen.firstDay)}`}>✓ {formatDate(seen.lastDay)} ({seen.visits})</span>;
+  return <span className={styles.muted}>{stats && contact.refLink && contact.stage !== "to_contact" ? "încă nu" : "—"}</span>;
+}
+
 type Props = {
   contacts: Contact[];
+  siteStats: SiteStats | null;
   onSave: (contact: Contact, deleted?: boolean) => void;
   editing: Contact | null;
   setEditing: (contact: Contact | null) => void;
 };
 
-export function Outreach({ contacts, onSave, editing, setEditing }: Props) {
+export function Outreach({ contacts, siteStats, onSave, editing, setEditing }: Props) {
   const [query, setQuery] = useState("");
   const [stage, setStage] = useState<"" | Stage | "open" | "due">("open");
   const [copied, setCopied] = useState<string | null>(null);
@@ -138,6 +147,7 @@ export function Outreach({ contacts, onSave, editing, setEditing }: Props) {
                 <th>Piață · domeniu</th>
                 <th>Etapă</th>
                 <th>Trimis</th>
+                <th>Site</th>
                 <th>Follow-up</th>
                 <th>Rată</th>
                 <th />
@@ -179,6 +189,9 @@ export function Outreach({ contacts, onSave, editing, setEditing }: Props) {
                     </select>
                   </td>
                   <td className={styles.nowrap}>{formatDate(c.sentAt)}</td>
+                  <td className={styles.nowrap}>
+                    <SiteSeen contact={c} stats={siteStats} />
+                  </td>
                   <td className={`${styles.nowrap} ${c.nextFollowUp && c.nextFollowUp <= now && !CLOSED.includes(c.stage) ? styles.overdue : ""}`}>
                     {formatDate(c.nextFollowUp)}
                   </td>

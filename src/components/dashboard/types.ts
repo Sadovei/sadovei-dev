@@ -22,6 +22,23 @@ export type RadarMeta = {
   fullTimeFloorEur: number;
 };
 
+// Site analytics (written by Sadovei/job-radar from GoatCounter every 3 hours)
+export type SiteStats = {
+  generatedAt: string;
+  site: string;
+  days: number;
+  start: string;
+  end: string;
+  totals: { visits: number; events: number; noReferrer: number };
+  daily: { day: string; visits: number }[];
+  pages: { path: string; title: string; visits: number }[];
+  events: { name: string; title: string; count: number }[];
+  // scheme: c = ?ref= link, h = website, g = grouped (Google, Email…), o = app; empty name = no referrer
+  referrers: { name: string; scheme: string; visits: number; firstDay: string; lastDay: string; byDay: Record<string, number> }[];
+  locations: { name: string; visits: number }[];
+  sizes: { name: string; visits: number }[];
+};
+
 // Tracker (written by the dashboard). Records are never removed, only marked deleted, so edits from two devices merge cleanly.
 type Base = { id: string; updatedAt: string; deleted?: boolean };
 

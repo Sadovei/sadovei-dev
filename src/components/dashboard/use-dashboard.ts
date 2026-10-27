@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { checkAccess, GitHubError, readFile, readRaw, TRACKER_PATH, writeFile } from "./github";
-import { emptyTracker, type RadarJob, type RadarMeta, type Tracker } from "./types";
+import { emptyTracker, type RadarJob, type RadarMeta, type SiteStats, type Tracker } from "./types";
 
 const TOKEN_KEY = "dashboard-token";
 
@@ -11,7 +11,7 @@ type Collection = "contacts" | "jobs" | "brokers" | "templates";
 export type DashboardState =
   | { status: "signed-out"; error?: string }
   | { status: "loading" }
-  | { status: "ready"; jobs: RadarJob[]; meta: RadarMeta | null; tracker: Tracker };
+  | { status: "ready"; jobs: RadarJob[]; meta: RadarMeta | null; siteStats: SiteStats | null; tracker: Tracker };
 
 function storedToken() {
   try {
@@ -66,14 +66,15 @@ export function useDashboard() {
     if (!token.current) return;
     setState({ status: "loading" });
     try {
-      const [jobs, meta, file] = await Promise.all([
+      const [jobs, meta, siteStats, file] = await Promise.all([
         readRaw<RadarJob[]>(token.current, "data/jobs.json"),
         readRaw<RadarMeta>(token.current, "data/meta.json"),
+        readRaw<SiteStats>(token.current, "data/site-stats.json"),
         readFile<Tracker>(token.current, TRACKER_PATH),
       ]);
       sha.current = file?.sha ?? null;
       tracker.current = normalize(file?.data ?? null);
-      setState({ status: "ready", jobs: jobs ?? [], meta, tracker: tracker.current });
+      setState({ status: "ready", jobs: jobs ?? [], meta, siteStats, tracker: tracker.current });
     } catch (error) {
       const expired = error instanceof GitHubError && (error.status === 401 || error.status === 403);
       if (expired) {

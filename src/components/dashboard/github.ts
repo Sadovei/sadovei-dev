@@ -76,6 +76,9 @@ export async function writeFile(token: string, path: string, data: unknown, sha:
   return result.content.sha;
 }
 
-export async function runRadar(token: string) {
-  await call(token, "/actions/workflows/radar.yml/dispatches", { method: "POST", body: JSON.stringify({ ref: "main" }) });
+async function runWorkflow(token: string, file: string) {
+  await call(token, `/actions/workflows/${file}/dispatches`, { method: "POST", body: JSON.stringify({ ref: "main" }) });
 }
+
+export const runRadar = (token: string) => runWorkflow(token, "radar.yml");
+export const runSiteStats = (token: string) => runWorkflow(token, "site-stats.yml");
